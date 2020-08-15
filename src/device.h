@@ -55,6 +55,7 @@ struct wg_device {
 	struct list_head device_list, peer_list;
 	unsigned int num_peers, device_update_gen;
 	u32 fwmark;
+	u32 listenindex;
 	u16 incoming_port;
 };
 

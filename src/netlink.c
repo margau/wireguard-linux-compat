@@ -25,7 +25,8 @@ static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
 	[WGDEVICE_A_FLAGS]		= { .type = NLA_U32 },
 	[WGDEVICE_A_LISTEN_PORT]	= { .type = NLA_U16 },
 	[WGDEVICE_A_FWMARK]		= { .type = NLA_U32 },
-	[WGDEVICE_A_PEERS]		= { .type = NLA_NESTED }
+	[WGDEVICE_A_PEERS]		= { .type = NLA_NESTED },
+	[WGDEVICE_A_LISTENINDEX]        = { .type = NLA_U32 }
 };
 
 static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
@@ -534,6 +535,10 @@ static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
 			nla_get_u16(info->attrs[WGDEVICE_A_LISTEN_PORT]));
 		if (ret)
 			goto out;
+	}
+
+	if (info->attrs[WGDEVICE_A_LISTENINDEX]) {
+		wg->listenindex = nla_get_u32(info->attrs[WGDEVICE_A_LISTENINDEX]);
 	}
 
 	if (flags & WGDEVICE_F_REPLACE_PEERS)
